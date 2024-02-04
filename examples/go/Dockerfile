@@ -1,22 +1,26 @@
+## Build
 FROM golang:1.21 AS builder
 
-WORKDIR /app
+WORKDIR /go/src/github.com/Doer-org/ketos
 
 COPY go.mod ./
 COPY go.sum ./
+
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
+RUN go build -o /docker-gs-ping
 
-FROM alpine:latest  
+## Deploy
+FROM gcr.io/distroless/base-debian10
 
-RUN apk --no-cache add ca-certificates
+WORKDIR /
 
-WORKDIR /root/
-
-COPY --from=builder /app/myapp .
+COPY --from=build /docker-gs-ping /docker-gs-ping
 
 EXPOSE 8090
-CMD ["./myapp"]
+
+USER nonroot:nonroot
+
+ENTRYPOINT ["/docker-gs-ping"]

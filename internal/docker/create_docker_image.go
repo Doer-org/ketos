@@ -41,7 +41,7 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 		ctx,
 		tar,
 		types.ImageBuildOptions{
-			Tags:       []string{"ketos-tmp-image:latest"},
+			Tags:       []string{"ketos-tmp-image:0.0.1"},
 			Dockerfile: dockerfilename, // またはDockerfileの相対パス
 			Remove:     true,           // ビルド後に中間コンテナを削除
 			NoCache:    true,           // キャッシュを使わない

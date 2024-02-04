@@ -23,12 +23,18 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: ${{ matrix.go-version }}
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
     - name: Build
       run: go build -v ./...
 
     - name: Test
-      run: go test -race -coverprofile=coverage.txt -covermode=atomic
+      run: go test ./... -v
+
+    - name: List Docker Images
+      run: docker images
     
     - name: golangci-lint
       uses: reviewdog/action-golangci-lint@v2
