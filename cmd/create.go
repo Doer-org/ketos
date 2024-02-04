@@ -16,6 +16,7 @@ const (
 	TarTmpDir   = "tmp-tar"
 	ImageName   = "ketos-tmp-image"
 )
+var dirPath string
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
@@ -31,8 +32,10 @@ var createCmd = &cobra.Command{
 
 func createImageWithPack() {
 	// Packを外部コマンドで実行してimageを作成
-	cmd := exec.Command("pack", "build", "ketos-tmp-image", "--builder", "gcr.io/buildpacks/builder:v1")
-	cmd.Dir = "examples/go"
+	cmd := exec.Command("pack", "build", ImageName, "--builder", "gcr.io/buildpacks/builder:v1")
+	if dirPath != "" {
+		cmd.Dir = dirPath
+	}
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -70,6 +73,7 @@ func compressImageToTar() {
 
 func init() {
 	rootCmd.AddCommand(createCmd)
+	createCmd.Flags().StringVarP(&dirPath, "path", "p", "", "directory path to create docker image")
 
 	// Here you will define your flags and configuration settings.
 
