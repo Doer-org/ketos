@@ -4,10 +4,17 @@ Copyright © 2024 Do'er
 package cmd
 
 import (
+	"context"
 	"os"
 	"os/exec"
 
+	"github.com/docker/docker/client"
 	"github.com/spf13/cobra"
+)
+
+const (
+	TarTmpDir   = "tmp-tar"
+	ImageName   = "ketos-tmp-image"
 )
 
 // createCmd represents the create command
@@ -18,7 +25,7 @@ var createCmd = &cobra.Command{
 	compresses it, and sends it to the server.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		createImageWithPack()
-		compressImage()
+		compressImageToTar()
 	},
 }
 
@@ -34,8 +41,31 @@ func createImageWithPack() {
 	}
 }
 
-func compressImage() {
+func compressImageToTar() {
 	// imageをtarに圧縮
+	ctx := context.Background()
+    cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+    if err != nil {
+        panic(err)
+    }
+	if _, err := os.Stat(TarTmpDir); os.IsNotExist(err) {
+		os.Mkdir(TarTmpDir, 0777)
+	}
+	tarFileName := TarTmpDir + "/" + ImageName + ".tar"
+	imageSaveResponse, err := cli.ImageSave(ctx, []string{ImageName})
+    if err != nil {
+        panic(err)
+    }
+    defer imageSaveResponse.Close()
+    file, err := os.Create(tarFileName)
+    if err != nil {
+        panic(err)
+    }
+    defer file.Close()
+    _, err = file.ReadFrom(imageSaveResponse)
+    if err != nil {
+        panic(err)
+    }
 }
 
 func init() {
