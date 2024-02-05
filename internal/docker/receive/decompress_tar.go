@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	"github.com/Doer-org/ketos/internal/docker"
 	"github.com/docker/docker/client"
 )
 
@@ -14,7 +15,7 @@ func DecompressTarToImage() {
 	if err != nil {
 		panic(err)
 	}
-	tarFileName := TarTmpDir + "/" + ImageName + ".tar"
+	tarFileName := docker.TarTmpDir + "/" + docker.ImageName + ".tar"
 	imageTar, err := os.Open(tarFileName)
 	if err != nil {
 		panic(err)
