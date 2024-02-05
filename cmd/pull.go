@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"github.com/Doer-org/ketos/internal/api"
-	"github.com/Doer-org/ketos/internal/docker"
+	docker "github.com/Doer-org/ketos/internal/docker/receive"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,8 @@ var pullCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		api.ReceiveTarFromServer()
 		docker.DecompressTarToImage()
-		// docker.RunImage()
+		respID := docker.CreateContainer()
+		docker.RunConrainer(respID)
 	},
 }
 
