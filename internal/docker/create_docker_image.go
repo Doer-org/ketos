@@ -2,7 +2,6 @@ package docker
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -42,20 +41,18 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 		tar,
 		types.ImageBuildOptions{
 			Tags:       []string{"ketos-tmp-image:0.0.1"},
-			Dockerfile: dockerfilename, // またはDockerfileの相対パス
-			Remove:     true,           // ビルド後に中間コンテナを削除
-			NoCache:    true,           // キャッシュを使わない
+			Dockerfile: dockerfilename,
+			Remove:     true,
+			NoCache:    true,
 		},
 	)
 	if err != nil {
 		return err
 	}
 	defer imageBuildResponse.Body.Close()
-	// ビルドログを標準出力に表示
 	_, err = io.Copy(os.Stdout, imageBuildResponse.Body)
 	if err != nil {
 		return err
 	}
-	fmt.Println("Image build successful!")
 	return nil
 }
