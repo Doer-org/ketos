@@ -1,26 +1,32 @@
-## Build
+# ビルド環境
 FROM golang:1.21 AS builder
 
-WORKDIR /go/src/github.com/Doer-org/ketos
+# アプリケーションのソースコードを含むディレクトリを指定
+WORKDIR /app
 
+# モジュールをダウンロード
 COPY go.mod ./
-COPY go.sum ./
-
 RUN go mod download
 
-COPY . .
+# ソースコードをコピー
+COPY *.go ./
 
-RUN go build -o /docker-gs-ping
+# バイナリをビルド
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
 
-## Deploy
-FROM gcr.io/distroless/base-debian10
+# 実行環境
+FROM alpine:latest  
 
-WORKDIR /
+# セキュリティアップデート
+RUN apk --no-cache add ca-certificates
 
-COPY --from=build /docker-gs-ping /docker-gs-ping
+WORKDIR /root/
 
-EXPOSE 8090
+# ビルド環境からバイナリをコピー
+COPY --from=builder /app/myapp .
 
-USER nonroot:nonroot
+# 8080ポートを開放
+EXPOSE 8080
 
-ENTRYPOINT ["/docker-gs-ping"]
+# アプリケーションを実行
+CMD ["./myapp"]
