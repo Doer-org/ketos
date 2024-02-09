@@ -18,16 +18,37 @@ var createCmd = &cobra.Command{
 	Short: "Create Docker image based on your local environment",
 	Long: `This command creates a docker image based on the local environment, 
 	compresses it, and sends it to the server.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		docker.CreateImageWithPack()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		path, err := cmd.Flags().GetString("path")
+		if err != nil {
+			return err
+		}
+		language, err := cmd.Flags().GetString("language")
+		if err != nil {
+			return err
+		}
+		filename, err := cmd.Flags().GetString("filename")
+		if err != nil {
+			return err
+		}
+		dockerfile, err := cmd.Flags().GetBool("dockerfile")
+		if err != nil {
+			return err
+		}
+
+		docker.CreateImage(dockerfile, language, path, filename)
 		docker.CompressImageToTar()
 		api.SendTarToServer()
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringVarP(&dirPath, "path", "p", "", "directory path to create docker image")
+	createCmd.Flags().StringP("path", "p", "", "directory path to create docker image")
+	createCmd.Flags().StringP("langage", "l", "", "language type to create docker image")
+	createCmd.Flags().StringP("filename", "f", "", "dockerfile name to create docker image")
+	createCmd.Flags().BoolP("dockerfile", "d", false, "dockerfile or buildpacks")
 
 	// Here you will define your flags and configuration settings.
 

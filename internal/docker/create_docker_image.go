@@ -11,18 +11,20 @@ import (
 	"github.com/docker/docker/pkg/archive"
 )
 
-func CreateImageWithPack() {
-	// Packを外部コマンドで実行してimageを作成
-	cmd := exec.Command("pack", "build", ImageName, "--builder", "gcr.io/buildpacks/builder:v1")
-	if dirPath != "" {
-		cmd.Dir = dirPath
+func CreateImage(dockerFile bool, languageType string, path string, dockerfilename string) error {
+	if dockerFile {
+		err := createImageWithDockerFile(dirPath, dockerfilename)
+		if err != nil {
+			return err
+		}
+	} else {
+		err := createImageWithBuildPacks(dirPath, dockerfilename, languageType)
+		if err != nil {
+			return err
+		}
 	}
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		panic(err)
-	}
+
+	return nil
 }
 
 func createImageWithDockerFile(path string, dockerfilename string) error {
@@ -55,4 +57,37 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 		return err
 	}
 	return nil
+}
+
+func createImageWithBuildPacks(path string, dockerfilename string, language string) error {
+	builder := responseBuilder(language)
+
+	cmd := exec.Command("pack", "build", ImageName, "--builder", builder, "--path", path, "--publish")
+	if dirPath != "" {
+		cmd.Dir = dirPath
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func responseBuilder(language string) string {
+	switch language {
+	case "node":
+		return "gcr.io/buildpacks/builder:v1"
+	case "go":
+		return "gcr.io/buildpacks/builder:v1"
+	case "python":
+		return "gcr.io/buildpacks/builder:v1"
+	case "java":
+		return "gcr.io/buildpacks/builder:v1"
+	case "ruby":
+		return "paketobuildpacks/builder:base"
+	default:
+		return "gcr.io/buildpacks/builder:v1"
+	}
 }
