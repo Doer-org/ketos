@@ -7,12 +7,12 @@ import (
 	"github.com/docker/docker/client"
 )
 
-func CompressImageToTar() {
+func CompressImageToTar() error {
 	// imageをtarに圧縮
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if _, err := os.Stat(TarTmpDir); os.IsNotExist(err) {
 		os.Mkdir(TarTmpDir, 0777)
@@ -20,16 +20,17 @@ func CompressImageToTar() {
 	tarFileName := TarTmpDir + "/" + ImageName + ".tar"
 	imageSaveResponse, err := cli.ImageSave(ctx, []string{ImageName})
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer imageSaveResponse.Close()
 	file, err := os.Create(tarFileName)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 	_, err = file.ReadFrom(imageSaveResponse)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return nil
 }

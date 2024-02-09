@@ -28,8 +28,11 @@ var pullCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		api.ReceiveTarFromServer()
-		err := docker.DecompressTarToImage()
+		err := api.ReceiveTarFromServer()
+		if err != nil {
+			return err
+		}
+		err = docker.DecompressTarToImage()
 		if err != nil {
 			return err
 		}
