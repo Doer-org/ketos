@@ -4,6 +4,8 @@ Copyright © 2024 Do'er
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/Doer-org/ketos/internal/api"
@@ -14,7 +16,7 @@ var dirPath string
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "push",
 	Short: "Create Docker image based on your local environment",
 	Long: `This command creates a docker image based on the local environment, 
 	compresses it, and sends it to the server.`,
@@ -36,8 +38,12 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Println("path: ", path)
 
-		docker.CreateImage(dockerfile, language, path, filename)
+		err = docker.CreateImage(dockerfile, language, path, filename)
+		if err != nil {
+			return err
+		}
 		docker.CompressImageToTar()
 		api.SendTarToServer()
 		return nil
@@ -47,7 +53,7 @@ var createCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(createCmd)
 	createCmd.Flags().StringP("path", "p", "", "directory path to create docker image")
-	createCmd.Flags().StringP("langage", "l", "", "language type to create docker image")
+	createCmd.Flags().StringP("language", "l", "", "language type to create docker image")
 	createCmd.Flags().StringP("filename", "f", "", "dockerfile name to create docker image")
 	createCmd.Flags().BoolP("dockerfile", "d", false, "dockerfile or buildpacks")
 

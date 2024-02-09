@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -12,13 +13,14 @@ import (
 )
 
 func CreateImage(dockerFile bool, languageType string, path string, dockerfilename string) error {
+
 	if dockerFile {
-		err := createImageWithDockerFile(dirPath, dockerfilename)
+		err := createImageWithDockerFile(path, dockerfilename)
 		if err != nil {
 			return err
 		}
 	} else {
-		err := createImageWithBuildPacks(dirPath, dockerfilename, languageType)
+		err := createImageWithBuildPacks(path, dockerfilename, languageType)
 		if err != nil {
 			return err
 		}
@@ -28,6 +30,7 @@ func CreateImage(dockerFile bool, languageType string, path string, dockerfilena
 }
 
 func createImageWithDockerFile(path string, dockerfilename string) error {
+
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -35,8 +38,11 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 	}
 	tar, err := archive.TarWithOptions(path, &archive.TarOptions{})
 	if err != nil {
-		panic(err)
+		return err
 	}
+	fmt.Println("Creating image with Dockerfile")
+	fmt.Println("Path: ", path)
+	fmt.Println("Dockerfile: ", dockerfilename)
 	defer tar.Close()
 	imageBuildResponse, err := cli.ImageBuild(
 		ctx,
@@ -51,6 +57,7 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 	if err != nil {
 		return err
 	}
+
 	defer imageBuildResponse.Body.Close()
 	_, err = io.Copy(os.Stdout, imageBuildResponse.Body)
 	if err != nil {
