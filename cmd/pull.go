@@ -28,7 +28,12 @@ var pullCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := api.ReceiveTarFromServer()
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
+
+		err = api.ReceiveTarFromServer(id)
 		if err != nil {
 			return err
 		}
@@ -50,6 +55,8 @@ var pullCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(pullCmd)
+
+	createCmd.Flags().StringP("id", "i", "", "ketos docker image id")
 
 	// Here you will define your flags and configuration settings.
 
