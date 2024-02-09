@@ -14,6 +14,7 @@ var pullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull Docker image from the server and run it",
 	Long: `This command pulls a docker image from the server and runs it.`,
+	Args: cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		api.ReceiveTarFromServer()
 		docker.DecompressTarToImage()

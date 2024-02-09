@@ -18,6 +18,7 @@ var createCmd = &cobra.Command{
 	Short: "Create Docker image based on your local environment",
 	Long: `This command creates a docker image based on the local environment, 
 	compresses it, and sends it to the server.`,
+	Args: cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		docker.CreateImageWithPack()
 		docker.CompressImageToTar()
