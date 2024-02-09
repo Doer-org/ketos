@@ -10,4 +10,4 @@ make install
 ```
 ## Usage
 
-## LICSENCE
+## LICENSE
