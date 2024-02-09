@@ -69,7 +69,7 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 func createImageWithBuildPacks(path string, dockerfilename string, language string) error {
 	builder := responseBuilder(language)
 
-	cmd := exec.Command("pack", "build", ImageName, "--builder", builder, "--path", path, "--publish")
+	cmd := exec.Command("pack", "build", ImageName, "--builder", builder, "--path", path)
 	if dirPath != "" {
 		cmd.Dir = dirPath
 	}
