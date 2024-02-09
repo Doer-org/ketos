@@ -8,17 +8,17 @@ import (
 	"github.com/docker/docker/client"
 )
 
-func RunConrainer(respID string) {
+func RunConrainer(respID string) error {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// コンテナを起動
-	if err := cli.ContainerStart(ctx, respID, container.StartOptions{});
-	err != nil {
-		panic(err)
+	if err := cli.ContainerStart(ctx, respID, container.StartOptions{}); err != nil {
+		return err
 	}
 	fmt.Printf("Container has been started\n")
+	return nil
 }

@@ -30,7 +30,6 @@ func CreateImage(dockerFile bool, languageType string, path string, dockerfilena
 }
 
 func createImageWithDockerFile(path string, dockerfilename string) error {
-
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {

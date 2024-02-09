@@ -9,11 +9,11 @@ import (
 	"github.com/docker/docker/client"
 )
 
-func CreateContainer() string{
+func CreateContainer() (string, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// コンテナを作成
@@ -21,8 +21,8 @@ func CreateContainer() string{
 		Image: docker.ImageName,
 	}, nil, nil, nil, docker.ContainerName)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	fmt.Printf("Container has been created\n")
-	return resp.ID
+	return resp.ID, nil
 }

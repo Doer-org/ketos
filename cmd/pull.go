@@ -4,6 +4,8 @@ Copyright © 2024 Do'er
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/Doer-org/ketos/internal/api"
 	docker "github.com/Doer-org/ketos/internal/docker/receive"
 	"github.com/spf13/cobra"
@@ -13,13 +15,33 @@ import (
 var pullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull Docker image from the server and run it",
-	Long: `This command pulls a docker image from the server and runs it.`,
-	Args: cobra.ExactArgs(0),
-	Run: func(cmd *cobra.Command, args []string) {
+	Long:  `This command pulls a docker image from the server and runs it.`,
+	Args:  cobra.ExactArgs(0),
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println(`
+	     __ __ ________________  _____
+        / //_// ____/_  __/ __ \/ ___/
+       / ,<  / __/   / / / / / /\__ \ 
+      / /| |/ /___  / / / /_/ /___/ / 
+     /_/ |_/_____/ /_/  \____//____/  
+                                       						  				   
+	`)
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
 		api.ReceiveTarFromServer()
-		docker.DecompressTarToImage()
-		respID := docker.CreateContainer()
-		docker.RunConrainer(respID)
+		err := docker.DecompressTarToImage()
+		if err != nil {
+			return err
+		}
+		respID, err := docker.CreateContainer()
+		if err != nil {
+			return err
+		}
+		err = docker.RunConrainer(respID)
+		if err != nil {
+			return err
+		}
+		return nil
 	},
 }
 

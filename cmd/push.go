@@ -21,6 +21,16 @@ var createCmd = &cobra.Command{
 	Long: `This command creates a docker image based on the local environment, 
 	compresses it, and sends it to the server.`,
 	Args: cobra.ExactArgs(0),
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println(`
+	     __ __ ________________  _____
+        / //_// ____/_  __/ __ \/ ___/
+       / ,<  / __/   / / / / / /\__ \ 
+      / /| |/ /___  / / / /_/ /___/ / 
+     /_/ |_/_____/ /_/  \____//____/  
+                                       						  				   
+	`)
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		path, err := cmd.Flags().GetString("path")
 		if err != nil {
