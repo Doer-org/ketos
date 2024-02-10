@@ -48,7 +48,7 @@ func createImageWithDockerFile(directory string, dockerfilename string) error {
 		ctx,
 		tar,
 		types.ImageBuildOptions{
-			Tags:       []string{"ketos-tmp-image:0.0.1"},
+			Tags:       []string{docker.ImageName},
 			Dockerfile: dockerfilename,
 			Remove:     true,
 			NoCache:    true,

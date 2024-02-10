@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
@@ -29,7 +30,13 @@ func SendTarToServer(publishList []string, envList []string) error {
 		return err
 	}
 	writer.Close()
-	fullURL := fmt.Sprintf("%s?port=%s", BackendURL, "8080")
+
+	portsString := strings.Join(publishList, ",")
+	if portsString == "" {
+		portsString = "none"
+	}
+
+	fullURL := fmt.Sprintf("%s?port=%s", BackendURL, portsString)
 	request, err := http.NewRequest("POST", fullURL, body)
 	if err != nil {
 		return err
@@ -42,6 +49,7 @@ func SendTarToServer(publishList []string, envList []string) error {
 		return err
 	}
 	defer response.Body.Close()
+	
 	var responseBody bytes.Buffer
 	_, err = io.Copy(&responseBody, response.Body)
 	if err != nil {
