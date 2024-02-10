@@ -64,10 +64,12 @@ var createCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringP("path", "p", "", "directory path to create docker image")
-	createCmd.Flags().StringP("language", "l", "", "language type to create docker image")
-	createCmd.Flags().StringP("filename", "f", "", "dockerfile name to create docker image")
-	createCmd.Flags().BoolP("dockerfile", "d", false, "dockerfile or buildpacks")
+	createCmd.Flags().StringP("directory", "d", "", "Directory path to create docker image")
+	createCmd.Flags().StringP("language", "l", "", "Language type to create docker image")
+	createCmd.Flags().StringP("filename", "f", "", "Dockerfile name to create docker image")
+	createCmd.Flags().BoolP("dockerfile", "D", false, "Dockerfile or buildpacks")
+	createCmd.Flags().StringSliceP("publish", "p", []string{}, "Publish a container's port(s) to the host")
+	createCmd.Flags().StringSliceP("env", "e", []string{}, "Set environment variable(s)")
 
 	// Here you will define your flags and configuration settings.
 
