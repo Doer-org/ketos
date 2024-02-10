@@ -69,6 +69,7 @@ func init() {
 	createCmd.Flags().StringP("filename", "f", "", "Dockerfile name to create docker image")
 	createCmd.Flags().BoolP("dockerfile", "D", false, "Dockerfile or buildpacks")
 	createCmd.Flags().StringSliceP("publish", "p", []string{}, "Publish a container's port(s) to the host")
+	createCmd.Flags().StringSliceP("env", "e", []string{}, "Set environment variable(s)")
 
 	// Here you will define your flags and configuration settings.
 
