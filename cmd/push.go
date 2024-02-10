@@ -56,7 +56,7 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("path: ", directory)
+		fmt.Println("directory: ", directory)
 
 		err = docker.CreateImage(dockerfile, language, directory, filename)
 		if err != nil {
