@@ -16,7 +16,7 @@ func DecompressTarGzToImage() error {
 	if err != nil {
 		return err
 	}
-	tarGzFileName := "../../../tmp-tar" + "/" + docker.ImageName + ".tar.gz"
+	tarGzFileName := "./tmp-tar" + "/" + docker.ImageName + ".tar.gz"
 
 	gzFile, err := os.Open(tarGzFileName)
 	if err != nil {

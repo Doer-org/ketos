@@ -1,6 +1,7 @@
 package api
 
 var (
-	BackendURL = "http://localhost:8080"
+	BackendURL = "https://ketos-server.doer-app.com"
+	FrontURL   = "https://ketos.doer-app.com"
 	filePath   = "./tmp-tar/ketos-tmp-image.tar.gz"
 )
