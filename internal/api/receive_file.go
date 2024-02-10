@@ -7,7 +7,7 @@ import (
 )
 
 // TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
-func ReceiveTarFromServer(id string) error {
+func ReceiveTarGzFromServer(id string) error {
 	response, err := http.Get(BackendURL)
 	if err != nil {
 		return err

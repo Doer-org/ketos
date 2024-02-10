@@ -33,11 +33,11 @@ var pullCmd = &cobra.Command{
 			return err
 		}
 
-		err = api.ReceiveTarFromServer(id)
+		err = api.ReceiveTarGzFromServer(id)
 		if err != nil {
 			return err
 		}
-		err = docker.DecompressTarToImage()
+		err = docker.DecompressTarGzToImage()
 		if err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ var pullCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = docker.RunConrainer(respID)
+		err = docker.RunContainer(respID)
 		if err != nil {
 			return err
 		}
