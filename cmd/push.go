@@ -21,7 +21,7 @@ var createCmd = &cobra.Command{
 	Args: cobra.ExactArgs(0),
 	PreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println(`
-	     __ __ ________________  _____
+	 __ __ ________________  _____
         / //_// ____/_  __/ __ \/ ___/
        / ,<  / __/   / / / / / /\__ \ 
       / /| |/ /___  / / / /_/ /___/ / 
