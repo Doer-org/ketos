@@ -52,7 +52,7 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		docker.CompressImageToTar()
+		docker.CompressImageToTarGz()
 		err = api.SendTarToServer()
 		if err != nil {
 			return err
