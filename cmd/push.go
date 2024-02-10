@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/Doer-org/ketos/internal/api"
-	"github.com/Doer-org/ketos/internal/docker"
+	docker "github.com/Doer-org/ketos/internal/docker/push"
 )
 
 // pushCmd represents the create command

@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/Doer-org/ketos/internal/docker"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
@@ -68,8 +69,8 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 func createImageWithBuildPacks(path string, dockerfilename string, language string) error {
 	builder := responseBuilder(language)
 
-	cmd := exec.Command("pack", "build", ImageName, "--builder", builder, "--path", path)
-	if dirPath != "" {
+	cmd := exec.Command("pack", "build", docker.ImageName, "--builder", builder, "--path", path)
+	if docker.dirPath != "" {
 		cmd.Dir = dirPath
 	}
 	cmd.Stdout = os.Stdout
