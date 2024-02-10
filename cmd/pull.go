@@ -45,7 +45,7 @@ var pullCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = docker.RunConrainer(respID)
+		err = docker.RunContainer(respID)
 		if err != nil {
 			return err
 		}
