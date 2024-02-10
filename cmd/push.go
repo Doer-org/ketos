@@ -9,11 +9,11 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/Doer-org/ketos/internal/api"
-	"github.com/Doer-org/ketos/internal/docker"
+	docker "github.com/Doer-org/ketos/internal/docker/push"
 )
 
-// createCmd represents the create command
-var createCmd = &cobra.Command{
+// pushCmd represents the create command
+var pushCmd = &cobra.Command{
 	Use:   "push",
 	Short: "Create Docker image based on your local environment",
 	Long: `This command creates a docker image based on the local environment, 
@@ -29,9 +29,10 @@ var createCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) > 0 {
-			return fmt.Errorf("unexpected argument(s): %v\nUsage: %s", args, cmd.UseLine())
-		}
+		// TODO: 余分な引数がある場合はエラーを返したい
+		// if len(args) > 0 {
+		// 	return fmt.Errorf("unexpected argument(s): %v\nUsage: %s", args, cmd.UseLine())
+		// }
 		directory, err := cmd.Flags().GetString("directory")
 		if err != nil {
 			return err
@@ -73,13 +74,13 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringP("directory", "d", "", "Directory path to create docker image")
-	createCmd.Flags().StringP("language", "l", "", "Language type to create docker image")
-	createCmd.Flags().StringP("filename", "f", "", "Dockerfile name to create docker image")
-	createCmd.Flags().BoolP("dockerfile", "D", false, "Dockerfile or buildpacks")
-	createCmd.Flags().StringSliceP("publish", "p", []string{}, "Publish a container's port(s) to the host")
-	createCmd.Flags().StringSliceP("env", "e", []string{}, "Set environment variable(s)")
+	rootCmd.AddCommand(pushCmd)
+	pushCmd.Flags().StringP("directory", "d", "", "Directory path to create docker image")
+	pushCmd.Flags().StringP("language", "l", "", "Language type to create docker image")
+	pushCmd.Flags().StringP("filename", "f", "", "Dockerfile name to create docker image")
+	pushCmd.Flags().BoolP("dockerfile", "D", false, "Dockerfile or buildpacks")
+	pushCmd.Flags().StringSliceP("publish", "p", []string{}, "Publish a container's port(s) to the host")
+	pushCmd.Flags().StringSliceP("env", "e", []string{}, "Set environment variable(s)")
 
 	// Here you will define your flags and configuration settings.
 

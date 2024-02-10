@@ -5,5 +5,3 @@ const (
 	ImageName = "ketos-tmp-image"
 	ContainerName = "ketos-tmp-container"
 )
-
-var dirPath string

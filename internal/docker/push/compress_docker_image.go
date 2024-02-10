@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/Doer-org/ketos/internal/docker"
 	"github.com/docker/docker/client"
 )
 
@@ -16,11 +17,11 @@ func CompressImageToTarGz() error {
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(TarTmpDir); os.IsNotExist(err) {
-		os.Mkdir(TarTmpDir, 0777)
+	if _, err := os.Stat(docker.TarTmpDir); os.IsNotExist(err) {
+		os.Mkdir(docker.TarTmpDir, 0777)
 	}
-	tarGzFileName := TarTmpDir + "/" + ImageName + ".tar.gz"
-	imageSaveResponse, err := cli.ImageSave(ctx, []string{ImageName})
+	tarGzFileName := docker.TarTmpDir + "/" + docker.ImageName + ".tar.gz"
+	imageSaveResponse, err := cli.ImageSave(ctx, []string{docker.ImageName})
 	if err != nil {
 		return err
 	}
