@@ -13,15 +13,15 @@ import (
 	"github.com/docker/docker/pkg/archive"
 )
 
-func CreateImage(dockerFile bool, languageType string, path string, dockerfilename string) error {
+func CreateImage(dockerFile bool, languageType string, directory string, dockerfilename string) error {
 
 	if dockerFile {
-		err := createImageWithDockerFile(path, dockerfilename)
+		err := createImageWithDockerFile(directory, dockerfilename)
 		if err != nil {
 			return err
 		}
 	} else {
-		err := createImageWithBuildPacks(path, dockerfilename, languageType)
+		err := createImageWithBuildPacks(directory, dockerfilename, languageType)
 		if err != nil {
 			return err
 		}
@@ -30,18 +30,18 @@ func CreateImage(dockerFile bool, languageType string, path string, dockerfilena
 	return nil
 }
 
-func createImageWithDockerFile(path string, dockerfilename string) error {
+func createImageWithDockerFile(directory string, dockerfilename string) error {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
 	}
-	tar, err := archive.TarWithOptions(path, &archive.TarOptions{})
+	tar, err := archive.TarWithOptions(directory, &archive.TarOptions{})
 	if err != nil {
 		return err
 	}
 	fmt.Println("Creating image with Dockerfile")
-	fmt.Println("Path: ", path)
+	fmt.Println("Path: ", directory)
 	fmt.Println("Dockerfile: ", dockerfilename)
 	defer tar.Close()
 	imageBuildResponse, err := cli.ImageBuild(
@@ -66,13 +66,9 @@ func createImageWithDockerFile(path string, dockerfilename string) error {
 	return nil
 }
 
-func createImageWithBuildPacks(path string, dockerfilename string, language string) error {
+func createImageWithBuildPacks(directory string, dockerfilename string, language string) error {
 	builder := responseBuilder(language)
-
-	cmd := exec.Command("pack", "build", docker.ImageName, "--builder", builder, "--path", path)
-	if docker.dirPath != "" {
-		cmd.Dir = dirPath
-	}
+	cmd := exec.Command("pack", "build", docker.ImageName, "--builder", builder, "--path", directory)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
