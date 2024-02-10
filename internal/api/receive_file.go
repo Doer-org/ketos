@@ -30,6 +30,7 @@ func ReceiveTarGzFromServer(id string) error {
 		return err
 	}
 
+	fmt.Println(fmt.Sprintf("%s/info/%s", FrontURL, id))
 	fmt.Println(string(responseBody.String()))
 
 	file, err := os.Create(filePath)
