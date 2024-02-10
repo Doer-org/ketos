@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/Doer-org/ketos/internal/api"
 	docker "github.com/Doer-org/ketos/internal/docker/pull"
 	"github.com/spf13/cobra"
 )
@@ -32,15 +33,14 @@ var pullCmd = &cobra.Command{
 			return err
 		}
 
-		// err = api.ReceiveTarGzFromServer(id)
-		// if err != nil {
-		// 	return err
-		// }
-		// err = docker.DecompressTarGzToImage()
-		// if err != nil {
-		// 	return err
-		// }
-		fmt.Printf(id)
+		err = api.ReceiveTarGzFromServer(id)
+		if err != nil {
+			return err
+		}
+		err = docker.DecompressTarGzToImage()
+		if err != nil {
+			return err
+		}
 		respID, err := docker.CreateContainer()
 		if err != nil {
 			return err
