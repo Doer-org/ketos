@@ -12,8 +12,6 @@ import (
 	"github.com/Doer-org/ketos/internal/docker"
 )
 
-var dirPath string
-
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "push",
