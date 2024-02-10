@@ -29,9 +29,10 @@ var pushCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) > 0 {
-			return fmt.Errorf("unexpected argument(s): %v\nUsage: %s", args, cmd.UseLine())
-		}
+		// TODO: 余分な引数がある場合はエラーを返したい
+		// if len(args) > 0 {
+		// 	return fmt.Errorf("unexpected argument(s): %v\nUsage: %s", args, cmd.UseLine())
+		// }
 		directory, err := cmd.Flags().GetString("directory")
 		if err != nil {
 			return err
