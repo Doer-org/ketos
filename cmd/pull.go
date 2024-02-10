@@ -6,8 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Doer-org/ketos/internal/api"
-	docker "github.com/Doer-org/ketos/internal/docker/receive"
+	docker "github.com/Doer-org/ketos/internal/docker/pull"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +15,7 @@ var pullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull Docker image from the server and run it",
 	Long:  `This command pulls a docker image from the server and runs it.`,
-	Args:  cobra.ExactArgs(0),
+	// Args:  cobra.ExactArgs(0),
 	PreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println(`
 	 __ __ ________________  _____
@@ -33,14 +32,15 @@ var pullCmd = &cobra.Command{
 			return err
 		}
 
-		err = api.ReceiveTarGzFromServer(id)
-		if err != nil {
-			return err
-		}
-		err = docker.DecompressTarGzToImage()
-		if err != nil {
-			return err
-		}
+		// err = api.ReceiveTarGzFromServer(id)
+		// if err != nil {
+		// 	return err
+		// }
+		// err = docker.DecompressTarGzToImage()
+		// if err != nil {
+		// 	return err
+		// }
+		fmt.Printf(id)
 		respID, err := docker.CreateContainer()
 		if err != nil {
 			return err
@@ -55,8 +55,7 @@ var pullCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(pullCmd)
-
-	createCmd.Flags().StringP("id", "i", "", "ketos docker image id")
+	pullCmd.Flags().StringP("id", "i", "", "ketos docker image id")
 
 	// Here you will define your flags and configuration settings.
 
