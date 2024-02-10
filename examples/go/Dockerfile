@@ -26,7 +26,7 @@ WORKDIR /root/
 COPY --from=builder /app/myapp .
 
 # 8080ポートを開放
-EXPOSE 8080
+EXPOSE 8090
 
 # アプリケーションを実行
 CMD ["./myapp"]
