@@ -18,7 +18,6 @@ var createCmd = &cobra.Command{
 	Short: "Create Docker image based on your local environment",
 	Long: `This command creates a docker image based on the local environment, 
 	compresses it, and sends it to the server.`,
-	Args: cobra.ExactArgs(0),
 	PreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println(`
 	 __ __ ________________  _____
@@ -30,7 +29,10 @@ var createCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		path, err := cmd.Flags().GetString("path")
+		if len(args) > 0 {
+			return fmt.Errorf("unexpected argument(s): %v\nUsage: %s", args, cmd.UseLine())
+		}
+		directory, err := cmd.Flags().GetString("directory")
 		if err != nil {
 			return err
 		}
@@ -46,14 +48,22 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("path: ", path)
+		publishList, err := cmd.Flags().GetStringSlice("publish")
+		if err != nil {
+			return err
+		}
+		envList, err := cmd.Flags().GetStringSlice("env")
+		if err != nil {
+			return err
+		}
+		fmt.Println("directory: ", directory)
 
-		err = docker.CreateImage(dockerfile, language, path, filename)
+		err = docker.CreateImage(dockerfile, language, directory, filename)
 		if err != nil {
 			return err
 		}
 		docker.CompressImageToTarGz()
-		err = api.SendTarToServer()
+		err = api.SendTarToServer(publishList, envList)
 		if err != nil {
 			return err
 		}

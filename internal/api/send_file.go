@@ -10,7 +10,7 @@ import (
 )
 
 // TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
-func SendTarToServer() error {
+func SendTarToServer(publishList []string, envList []string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return err
