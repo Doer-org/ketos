@@ -30,7 +30,7 @@ var createCmd = &cobra.Command{
 	`)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		path, err := cmd.Flags().GetString("path")
+		directory, err := cmd.Flags().GetString("directory")
 		if err != nil {
 			return err
 		}
@@ -46,9 +46,17 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("path: ", path)
+		publishList, err := cmd.Flags().GetStringSlice("publish")
+		if err != nil {
+			return err
+		}
+		envList, err := cmd.Flags().GetStringSlice("env")
+		if err != nil {
+			return err
+		}
+		fmt.Println("path: ", directory)
 
-		err = docker.CreateImage(dockerfile, language, path, filename)
+		err = docker.CreateImage(dockerfile, language, directory, filename)
 		if err != nil {
 			return err
 		}
