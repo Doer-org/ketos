@@ -4,8 +4,7 @@ Copyright © 2024 Do'er
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/Doer-org/ketos/internal"
 	"github.com/Doer-org/ketos/internal/api"
 	docker "github.com/Doer-org/ketos/internal/docker/pull"
 	"github.com/spf13/cobra"
@@ -17,16 +16,6 @@ var pullCmd = &cobra.Command{
 	Short: "Pull Docker image from the server and run it",
 	Long:  `This command pulls a docker image from the server and runs it.`,
 	// Args:  cobra.ExactArgs(0),
-	PreRun: func(cmd *cobra.Command, args []string) {
-		fmt.Println(`
-	 __ __ ________________  _____
-        / //_// ____/_  __/ __ \/ ___/
-       / ,<  / __/   / / / / / /\__ \ 
-      / /| |/ /___  / / / /_/ /___/ / 
-     /_/ |_/_____/ /_/  \____//____/  
-                                       						  				   
-	`)
-	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
@@ -49,6 +38,7 @@ var pullCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		internal.PrintKetos()
 		return nil
 	},
 }

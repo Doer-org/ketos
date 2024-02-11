@@ -10,13 +10,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/Doer-org/ketos/internal"
 )
 
-// type Response struct {
-//     PullID string `json:"id"` // pullIDからPullIDへ変更して公開
-// }
-
-// TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
 func SendTarToServer(publishList []string, envList []string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -67,7 +64,8 @@ func SendTarToServer(publishList []string, envList []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("\n\n\nShare this command!!!!\n")
-	fmt.Printf("ketos pull -i %s\n", resp.ID) // resp.pullIDからresp.PullIDへ変更
+	internal.PrintKetos()
+	fmt.Printf("🐳🐳🐳 Share this command 🐳🐳🐳\n\n")
+	fmt.Printf("ketos pull -i %s\n", resp.ID)
 	return nil
 }
