@@ -11,6 +11,10 @@ import (
 	"strings"
 )
 
+// type Response struct {
+//     pullID string `json:"id"`
+// }
+
 // TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
 func SendTarToServer(publishList []string, envList []string) error {
 	file, err := os.Open(filePath)
@@ -57,5 +61,12 @@ func SendTarToServer(publishList []string, envList []string) error {
 	}
 
 	fmt.Println(string(responseBody.String()))
+	// var resp Response
+	// err = json.Unmarshal(responseBody.Bytes(), &resp)
+	// if err != nil {
+	// 	return err
+	// }
+	// fmt.Printf("Share this command!!!!\n")
+	// fmt.Printf("ketos pull -i %s\n", resp.pullID)
 	return nil
 }

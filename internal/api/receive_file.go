@@ -32,7 +32,7 @@ func GetServerInfo(id string) (string,error) {
 	if err != nil {
 		return "", err
 	}
-	fmt.Printf(fmt.Sprintf("%s/info/%s", FrontURL, id))	
+	fmt.Printf("%s/info/%s\n", FrontURL, id)	
 	return resp.Port, nil
 }
 
