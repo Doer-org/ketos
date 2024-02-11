@@ -85,6 +85,6 @@ func CreateContainer(port string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	fmt.Printf("Container has been created with ID: %s\n", resp.ID)
+	fmt.Printf("Container %s has been created with ID: %s\n", docker.ContainerName,resp.ID)
 	return resp.ID, nil
 }
