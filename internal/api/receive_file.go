@@ -11,6 +11,7 @@ import (
 
 type Response struct {
     Port string `json:"port"`
+	ID string `json:"id"`
 }
 
 func GetServerInfo(id string) (string,error) {
