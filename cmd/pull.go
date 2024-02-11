@@ -33,7 +33,7 @@ var pullCmd = &cobra.Command{
 			return err
 		}
 
-		err = api.ReceiveTarGzFromServer(id)
+		port, err := api.ReceiveTarGzFromServer(id)
 		if err != nil {
 			return err
 		}
@@ -41,7 +41,7 @@ var pullCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		respID, err := docker.CreateContainer()
+		respID, err := docker.CreateContainer(port)
 		if err != nil {
 			return err
 		}
