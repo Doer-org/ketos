@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -12,7 +13,7 @@ import (
 )
 
 // type Response struct {
-//     pullID string `json:"id"`
+//     PullID string `json:"id"` // pullIDからPullIDへ変更して公開
 // }
 
 // TODO: 取り敢えず書いてみただけなので、動作確認しつつ適宜変更してください。
@@ -61,12 +62,12 @@ func SendTarToServer(publishList []string, envList []string) error {
 	}
 
 	fmt.Println(string(responseBody.String()))
-	// var resp Response
-	// err = json.Unmarshal(responseBody.Bytes(), &resp)
-	// if err != nil {
-	// 	return err
-	// }
-	// fmt.Printf("Share this command!!!!\n")
-	// fmt.Printf("ketos pull -i %s\n", resp.pullID)
+	var resp Response
+	err = json.Unmarshal(responseBody.Bytes(), &resp)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("\n\n\nShare this command!!!!\n")
+	fmt.Printf("ketos pull -i %s\n", resp.ID) // resp.pullIDからresp.PullIDへ変更
 	return nil
 }
