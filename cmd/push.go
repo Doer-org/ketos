@@ -53,7 +53,10 @@ var pushCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		docker.CompressImageToTarGz()
+		err = docker.CompressImageToTarGz()
+		if err != nil {
+			return err
+		}
 		err = api.SendTarToServer(publishList, envList)
 		if err != nil {
 			return err
