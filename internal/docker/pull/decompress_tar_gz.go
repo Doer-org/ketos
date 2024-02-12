@@ -5,18 +5,16 @@ import (
 	"context"
 	"os"
 
-	"github.com/Doer-org/ketos/internal/docker"
 	"github.com/docker/docker/client"
 )
 
-func DecompressTarGzToImage() error {
+func DecompressTarGzToImage(tarGzFileName string) error {
 	// tar.gzをimageに展開
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
 	}
-	tarGzFileName := "./tmp-tar" + "/" + docker.ImageName + ".tar.gz"
 
 	gzFile, err := os.Open(tarGzFileName)
 	if err != nil {

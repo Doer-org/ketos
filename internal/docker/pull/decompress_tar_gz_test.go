@@ -7,6 +7,7 @@ import (
 )
 
 func TestDecompressTarGzToImage(t *testing.T) {
-	err := DecompressTarGzToImage()
+	tarGzFileName := "../../../testdata/test-tar/ketos-tmp-image.tar.gz"
+	err := DecompressTarGzToImage(tarGzFileName)
 	assert.NoError(t, err)
 }

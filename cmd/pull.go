@@ -6,7 +6,8 @@ package cmd
 import (
 	"github.com/Doer-org/ketos/internal"
 	"github.com/Doer-org/ketos/internal/api"
-	docker "github.com/Doer-org/ketos/internal/docker/pull"
+	"github.com/Doer-org/ketos/internal/docker"
+	dockerpull "github.com/Doer-org/ketos/internal/docker/pull"
 	"github.com/spf13/cobra"
 )
 
@@ -26,15 +27,16 @@ var pullCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = docker.DecompressTarGzToImage()
+		tarGzFileName := "./tmp-tar" + "/" + docker.ImageName + ".tar.gz"
+		err = dockerpull.DecompressTarGzToImage(tarGzFileName)
 		if err != nil {
 			return err
 		}
-		respID, err := docker.CreateContainer(port)
+		respID, err := dockerpull.CreateContainer(port)
 		if err != nil {
 			return err
 		}
-		err = docker.RunContainer(respID)
+		err = dockerpull.RunContainer(respID)
 		if err != nil {
 			return err
 		}
